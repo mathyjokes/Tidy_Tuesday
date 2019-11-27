@@ -1,18 +1,18 @@
 ---
-title: "TidyTuesday2019_Week47"
+title: "TidyTuesday2019_Week48"
 output: html_document
 ---
 
 ```{r}
 # Install the packages
-#devtools::install_github("thebioengineer/tidytuesdayR")
 library(tidytuesdayR)
 library(tidyverse)
 library(wesanderson)
 library(ggthemes)
 
 # Get the data 
-nz_bird <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-19/nz_bird.csv")
+raw_data <- tidytuesdayR::tt_load(2019, week = 48)
+loans <- raw_data$loans
 
 # Initial cleaning and structuring. Create new columns vote_rank and mean_rank
 birds <- nz_bird %>% 
@@ -41,15 +41,12 @@ bird_rating_plot <- ggplot(bird_plot) +
   #scale_fill_manual(values = wes_palette("FantasticFox1", n = 5)) +
   scale_fill_ptol() +
   theme_minimal() +
-  labs(title="Highest-Ranked NZ Birds", 
-       subtitle = "Birds with the highest mean rating are not always the most universally liked",
-       x = "Bird Breed", 
-       y = "Number of Votes", 
-       fill = "Rank") +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(face = "italic", hjust = 0.5),
-        axis.text.x = element_text(angle = 20, hjust = .75))
+  labs(title="Top 5 Highest-Ranked NZ Birds", x = "Bird Breed", y = "Number of Votes", fill = "Rank") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 20, hjust = .75))
 
 # Save plot to local folder
 ggsave('nz_birds_by_rank.png', height = 7, width = 7, bird_rating_plot)
+
+loans
 ```
