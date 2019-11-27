@@ -9,6 +9,7 @@ output: html_document
 library(tidytuesdayR)
 library(tidyverse)
 library(wesanderson)
+library(ggthemes)
 
 # Get the data 
 nz_bird <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-19/nz_bird.csv")
@@ -27,7 +28,7 @@ birds <- nz_bird %>%
 # Filter the data down to be just what is needed to plot
 bird_plot <- birds %>% 
   filter(bird_breed %in% unique(bird_breed)[1:5]) %>% 
-  mutate(bird_breed = factor(bird_breed, levels = unique(bird_plot$bird_breed)))
+  mutate(bird_breed = factor(bird_breed, levels = unique(birds$bird_breed)))
 unique(bird_plot$bird_breed)
 bird_plot$bird_breed %>% 
   glimpse()
@@ -35,12 +36,14 @@ bird_plot$bird_breed %>%
 # Create the barplot with labels          
 bird_rating_plot <- ggplot(bird_plot) +
   geom_bar(aes(x = bird_breed, fill = vote_rank)) +
-  geom_text(aes(x = bird_breed, y = number_votes+20, label = paste0("mean rating: \n", round(mean_rank, 2))), vjust = 0) +
+  geom_text(aes(x = bird_breed, y = number_votes+20, label = paste0("mean rank: \n", round(mean_rank, 2))), vjust = 0) +
   expand_limits(y = max(bird_plot$number_votes)+100) +
-  scale_fill_manual(values = wes_palette("FantasticFox1", n = 5)) +
-  theme(axis.text.x = element_text(angle = 20, hjust = .75)) +
-  ggtitle("Highest-voted NZ Birds, by rank") +
-  theme(plot.title = element_text(hjust = 0.5, size = 25))
+  #scale_fill_manual(values = wes_palette("FantasticFox1", n = 5)) +
+  scale_fill_ptol() +
+  theme_minimal() +
+  labs(title="Top 5 Highest-Ranked NZ Birds", x = "Bird Breed", y = "Number of Votes", fill = "Rank") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 20, hjust = .75))
 
 # Save plot to local folder
 ggsave('nz_birds_by_rank.png', height = 7, width = 7, bird_rating_plot)
