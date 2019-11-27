@@ -11,7 +11,7 @@ library(tidyverse)
 library(wesanderson)
 
 # Get the data 
-nz_bird <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-19/nz_bird.csv")
+nz_bird <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-19/nz_bird.csv")
 
 # Initial cleaning and structuring. Create new columns vote_rank and mean_rank
 birds <- nz_bird %>% 
